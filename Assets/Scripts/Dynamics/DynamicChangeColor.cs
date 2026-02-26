@@ -18,7 +18,7 @@ public class DynamicChangeColor : MonoBehaviour
 
     public void ChangeTargetColor()
     {
-        GameManager.Instance.SetRandomTargetColor();
+        GameManager.Instance.SetRandomTarget();
 
     }
 

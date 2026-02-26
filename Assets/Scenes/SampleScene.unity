@@ -560,6 +560,15 @@ MonoBehaviour:
   remainingTargetColor: 0
   panelManager: {fileID: 1790897105}
   timerScp: {fileID: 1862094876}
+  currentTarget: 0
+  availableTypes: 000000000100000002000000030000000400000005000000
+  prefabs:
+  - {fileID: 7926171151250395455, guid: 082a7e8482adc9a4daf792bae019f935, type: 3}
+  - {fileID: 678114800899559363, guid: 8dc53ed960ae9114c88e64e0e3c96aba, type: 3}
+  - {fileID: 6824158402325545543, guid: b9ce9a64b538cea4f8e094960f143d8c, type: 3}
+  - {fileID: 4350495474808114725, guid: 3c6a9b5eac32b254e814c209b34d8d74, type: 3}
+  - {fileID: 7735852415971357069, guid: d1cb599eddf341f43946c1595fad1c8c, type: 3}
+  - {fileID: 8091685554950198091, guid: ea0a78bc2479c274ba84fd560af90d12, type: 3}
   colors:
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0.08627451, g: 0.28627452, b: 0.7372549, a: 1}
@@ -2509,7 +2518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: COLOR
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
   m_sharedMaterial: {fileID: 2147374, guid: 0161d805a3764c089bef00bfe00793f5, type: 2}
@@ -2755,6 +2764,7 @@ MonoBehaviour:
   currentTime: 0
   maxTime: 30
   speedMultiplier: 1
+  isTimerStarted: 0
   bar: {fileID: 820742036}
   panelManager: {fileID: 1790897105}
 --- !u!4 &1862094877

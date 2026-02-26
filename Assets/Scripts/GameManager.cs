@@ -28,6 +28,10 @@ public class GameManager : MonoBehaviour
     public PanelManager panelManager;
     public Timer timerScp;
 
+    public BallType currentTarget;
+    public BallType[] availableTypes;
+    public GameObject[] prefabs;
+
     public List<Color> colors = new List<Color>()
     {
         Color.red,
@@ -61,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     public void StartSpawner()
     {
-        SetRandomTargetColor();
+        SetRandomTarget();
         SpawnObject(countSprites);
         timerScp.StartTimer();
     }
@@ -77,20 +81,77 @@ public class GameManager : MonoBehaviour
         return new Vector2(x, y);
     }
 
-    public void SetRandomTargetColor()
+    //public void SetRandomTargetColor()
+    //{
+    //    targetColorIndex = Random.Range(0, colors.Count);
+    //    targetColor = colors[targetColorIndex];
+
+    //    UpdateTargetColorUI();
+
+    //    targetColorUI.SetActive(true);
+    //}
+    public void SetRandomTarget()
     {
-        targetColorIndex = Random.Range(0, colors.Count);
-        targetColor = colors[targetColorIndex];
+        int randomIndex = Random.Range(0, availableTypes.Length);
+        currentTarget = availableTypes[randomIndex];
 
-        UpdateTargetColorUI();
-
+        targetColorText.text = currentTarget.ToString();
         targetColorUI.SetActive(true);
+        UpdateTargetColorUI();
+    }
+
+    public void CheckBall(PrefabCnt clickedBall)
+    {
+        if (clickedBall.type == currentTarget)
+        {
+            IncreaseScore(1);
+            remainingTargetColor--;
+            Destroy(clickedBall.gameObject);
+
+            if (remainingTargetColor <= 0)
+            {
+                Respawner();
+            }
+        }
+        else
+        {
+            Debug.Log("Incorrecto");
+        }
     }
 
     void UpdateTargetColorUI()
     {
-        targetColorText.text = colorNames[targetColorIndex];
-        targetColorText.color = targetColor;
+        //targetColorText.text = colorNames[targetColorIndex];
+        //targetColorText.color = targetColor;
+        targetColorText.text = currentTarget.ToString();
+        targetColorText.color = GetColorFromType(currentTarget);
+    }
+
+    Color GetColorFromType(BallType type)
+    {
+        switch (type)
+        {
+            case BallType.Rojo:
+                return Color.red;
+
+            case BallType.Verde:
+                return Color.green;
+
+            case BallType.Azul:
+                return Color.blue;
+
+            case BallType.Amarillo:
+                return Color.yellow;
+
+            case BallType.Morado:
+                return new Color(0.6f, 0f, 0.8f);
+
+            case BallType.Rosa:
+                return new Color(1f, 0.41f, 0.71f);
+
+            default:
+                return Color.white;
+        }
     }
 
     public void IncreaseScore(float amount)
@@ -107,50 +168,94 @@ public class GameManager : MonoBehaviour
 
     }
 
+    //public void SpawnObject(int amount)
+    //{
+    //    amount = Mathf.Max(amount, colors.Count);
+
+    //    List<Color> tempColors = new List<Color>(colors); //copia de la lista para no modificar la otra
+
+    //    int index = 0;
+
+    //    foreach (Color color in tempColors)
+    //    {
+    //        SpawnBallWithColor(color, GetGridPosition(index));
+    //        index++;
+    //    }
+
+    //    int remaining = amount - tempColors.Count;
+
+    //    for (int i = 0; i < remaining; i++)
+    //    {
+    //        Color randomColor = colors[Random.Range(0, colors.Count)];
+    //        SpawnBallWithColor(randomColor, GetGridPosition(index));
+    //        index++;
+    //    }
+
+    //}
+
     public void SpawnObject(int amount)
     {
-        amount = Mathf.Max(amount, colors.Count);
+        if (prefabs.Length == 0)
+        {
+            Debug.LogError("No hay prefabs asignados.");
+            return;
+        }
 
-        List<Color> tempColors = new List<Color>(colors); //copia de la lista para no modificar la otra
+        amount = Mathf.Max(amount, prefabs.Length);
 
         int index = 0;
 
-        foreach (Color color in tempColors)
+        // Primero: aseguramos que salga al menos uno de cada tipo
+        foreach (GameObject prefab in prefabs)
         {
-            SpawnBallWithColor(color, GetGridPosition(index));
+            SpawnBall(prefab, GetGridPosition(index));
             index++;
         }
 
-        int remaining = amount - tempColors.Count;
+        int remaining = amount - prefabs.Length;
 
+        // Luego rellenamos con random
         for (int i = 0; i < remaining; i++)
         {
-            Color randomColor = colors[Random.Range(0, colors.Count)];
-            SpawnBallWithColor(randomColor, GetGridPosition(index));
+            int randomIndex = Random.Range(0, prefabs.Length);
+            GameObject randomPrefab = prefabs[randomIndex];
+
+            SpawnBall(randomPrefab, GetGridPosition(index));
             index++;
         }
-
     }
 
-    void SpawnBallWithColor(Color color, Vector2 position)
+    void SpawnBall(GameObject prefab, Vector2 position)
     {
+        GameObject ball = Instantiate(prefab, position, Quaternion.identity);
 
-        GameObject ball = Instantiate(objectToSpawn, position, Quaternion.identity);
+        PrefabCnt circle = ball.GetComponent<PrefabCnt>();
 
-        CircleController circle = ball.GetComponent<CircleController>();
-        circle.SetColor(color);
-
-        if(color == targetColor)
+        if (circle.type == currentTarget)
         {
             remainingTargetColor++;
         }
     }
 
+    //void SpawnBallWithColor(Color color, Vector2 position)
+    //{
+
+    //    GameObject ball = Instantiate(objectToSpawn, position, Quaternion.identity);
+
+    //    CircleController circle = ball.GetComponent<CircleController>();
+    //    circle.SetColor(color);
+
+    //    if(color == targetColor)
+    //    {
+    //        remainingTargetColor++;
+    //    }
+    //}
+
     public void Respawner()
     {
         panelManager.ClearBalls();
         remainingTargetColor = 0;
-        SetRandomTargetColor();
+        SetRandomTarget();
         SpawnObject(countSprites);
         Debug.Log("Sipasa");
     }
