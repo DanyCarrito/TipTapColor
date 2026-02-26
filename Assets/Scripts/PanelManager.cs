@@ -33,7 +33,7 @@ public class PanelManager : MonoBehaviour
         panelGameOver.SetActive(false);
         GameManager.Instance.Respawner();
         GameManager.Instance.RestartValues();
-        GameManager.Instance.targetColorUI.SetActive(true);
+        //GameManager.Instance.targetColorUI.SetActive(true);
         dynamicsManager.ActivateRandomDynamic();
     }
 

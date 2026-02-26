@@ -95,9 +95,9 @@ public class GameManager : MonoBehaviour
         int randomIndex = Random.Range(0, availableTypes.Length);
         currentTarget = availableTypes[randomIndex];
 
+        UpdateTargetColorUI();
         targetColorText.text = currentTarget.ToString();
         targetColorUI.SetActive(true);
-        UpdateTargetColorUI();
     }
 
     public void CheckBall(PrefabCnt clickedBall)
@@ -132,19 +132,19 @@ public class GameManager : MonoBehaviour
         switch (type)
         {
             case BallType.Rojo:
-                return Color.red;
+                return new Color(0.86f, 0.15f, 0.15f);
 
             case BallType.Verde:
-                return Color.green;
+                return new Color(0.18f, 0.80f, 0.44f);
 
             case BallType.Azul:
-                return Color.blue;
+                return new Color(0.20f, 0.60f, 0.86f);
 
             case BallType.Amarillo:
-                return Color.yellow;
+                return new Color(1f, 0.84f, 0f);
 
             case BallType.Morado:
-                return new Color(0.6f, 0f, 0.8f);
+                return new Color(0.67f, 0.57f, 1f);
 
             case BallType.Rosa:
                 return new Color(1f, 0.41f, 0.71f);
