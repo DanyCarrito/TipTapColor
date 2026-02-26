@@ -16,8 +16,8 @@ public class PanelManager : MonoBehaviour
     public void GetNextLevelPanel()
     {
         //Time.timeScale = 0f;
-       ClearBalls();
        GameManager.Instance.targetColorUI.SetActive(false);
+       ClearBalls();
        panelNextLevel.SetActive(true);
     }
 
