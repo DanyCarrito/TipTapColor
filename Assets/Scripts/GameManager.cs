@@ -21,8 +21,6 @@ public class GameManager : MonoBehaviour
     public TMP_Text targetColorText;
     [SerializeField] private TMP_Text scoreText;
 
-    public Color targetColor;
-    public int targetColorIndex;
     public int remainingTargetColor = 0;
 
     public PanelManager panelManager;
@@ -31,16 +29,6 @@ public class GameManager : MonoBehaviour
     public BallType currentTarget;
     public BallType[] availableTypes;
     public GameObject[] prefabs;
-
-    public List<Color> colors = new List<Color>()
-    {
-        Color.red,
-        Color.blue,
-        Color.green,
-        Color.yellow
-    };
-
-    public List<string> colorNames;
 
     void Awake()
     {
@@ -63,6 +51,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    Color GetColorFromType(BallType type)
+    {
+        switch (type)
+        {
+            case BallType.Rojo:
+                return new Color(0.86f, 0.15f, 0.15f);
+
+            case BallType.Verde:
+                return new Color(0.18f, 0.80f, 0.44f);
+
+            case BallType.Azul:
+                return new Color(0.20f, 0.60f, 0.86f);
+
+            case BallType.Amarillo:
+                return new Color(1f, 0.84f, 0f);
+
+            case BallType.Morado:
+                return new Color(0.67f, 0.57f, 1f);
+
+            case BallType.Rosa:
+                return new Color(1f, 0.41f, 0.71f);
+
+            default:
+                return Color.white;
+        }
+    }
+
     public void StartSpawner()
     {
         SetRandomTarget();
@@ -81,15 +96,6 @@ public class GameManager : MonoBehaviour
         return new Vector2(x, y);
     }
 
-    //public void SetRandomTargetColor()
-    //{
-    //    targetColorIndex = Random.Range(0, colors.Count);
-    //    targetColor = colors[targetColorIndex];
-
-    //    UpdateTargetColorUI();
-
-    //    targetColorUI.SetActive(true);
-    //}
     public void SetRandomTarget()
     {
         int randomIndex = Random.Range(0, availableTypes.Length);
@@ -121,38 +127,10 @@ public class GameManager : MonoBehaviour
 
     void UpdateTargetColorUI()
     {
-        //targetColorText.text = colorNames[targetColorIndex];
-        //targetColorText.color = targetColor;
         targetColorText.text = currentTarget.ToString();
         targetColorText.color = GetColorFromType(currentTarget);
     }
 
-    Color GetColorFromType(BallType type)
-    {
-        switch (type)
-        {
-            case BallType.Rojo:
-                return new Color(0.86f, 0.15f, 0.15f);
-
-            case BallType.Verde:
-                return new Color(0.18f, 0.80f, 0.44f);
-
-            case BallType.Azul:
-                return new Color(0.20f, 0.60f, 0.86f);
-
-            case BallType.Amarillo:
-                return new Color(1f, 0.84f, 0f);
-
-            case BallType.Morado:
-                return new Color(0.67f, 0.57f, 1f);
-
-            case BallType.Rosa:
-                return new Color(1f, 0.41f, 0.71f);
-
-            default:
-                return Color.white;
-        }
-    }
 
     public void IncreaseScore(float amount)
     {
@@ -168,31 +146,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    //public void SpawnObject(int amount)
-    //{
-    //    amount = Mathf.Max(amount, colors.Count);
-
-    //    List<Color> tempColors = new List<Color>(colors); //copia de la lista para no modificar la otra
-
-    //    int index = 0;
-
-    //    foreach (Color color in tempColors)
-    //    {
-    //        SpawnBallWithColor(color, GetGridPosition(index));
-    //        index++;
-    //    }
-
-    //    int remaining = amount - tempColors.Count;
-
-    //    for (int i = 0; i < remaining; i++)
-    //    {
-    //        Color randomColor = colors[Random.Range(0, colors.Count)];
-    //        SpawnBallWithColor(randomColor, GetGridPosition(index));
-    //        index++;
-    //    }
-
-    //}
-
     public void SpawnObject(int amount)
     {
         if (prefabs.Length == 0)
@@ -205,27 +158,25 @@ public class GameManager : MonoBehaviour
 
         int index = 0;
 
-        // Primero: aseguramos que salga al menos uno de cada tipo
         foreach (GameObject prefab in prefabs)
         {
-            SpawnBall(prefab, GetGridPosition(index));
+            SpawnPrefab(prefab, GetGridPosition(index));
             index++;
         }
 
         int remaining = amount - prefabs.Length;
 
-        // Luego rellenamos con random
         for (int i = 0; i < remaining; i++)
         {
             int randomIndex = Random.Range(0, prefabs.Length);
             GameObject randomPrefab = prefabs[randomIndex];
 
-            SpawnBall(randomPrefab, GetGridPosition(index));
+            SpawnPrefab(randomPrefab, GetGridPosition(index));
             index++;
         }
     }
 
-    void SpawnBall(GameObject prefab, Vector2 position)
+    void SpawnPrefab(GameObject prefab, Vector2 position)
     {
         GameObject ball = Instantiate(prefab, position, Quaternion.identity);
 
@@ -236,20 +187,6 @@ public class GameManager : MonoBehaviour
             remainingTargetColor++;
         }
     }
-
-    //void SpawnBallWithColor(Color color, Vector2 position)
-    //{
-
-    //    GameObject ball = Instantiate(objectToSpawn, position, Quaternion.identity);
-
-    //    CircleController circle = ball.GetComponent<CircleController>();
-    //    circle.SetColor(color);
-
-    //    if(color == targetColor)
-    //    {
-    //        remainingTargetColor++;
-    //    }
-    //}
 
     public void Respawner()
     {

@@ -544,7 +544,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
-  minScore: 5
+  minScore: 29
   spawnRangeX: 5
   spawnRangeY: 3
   objectToSpawn: {fileID: 7165764835964400251, guid: e26fe961d4904644ca74a06bc2339acc, type: 3}
@@ -555,8 +555,6 @@ MonoBehaviour:
   targetColorUI: {fileID: 1533199167}
   targetColorText: {fileID: 1730222341}
   scoreText: {fileID: 870728399}
-  targetColor: {r: 0, g: 0, b: 0, a: 0}
-  targetColorIndex: 0
   remainingTargetColor: 0
   panelManager: {fileID: 1790897105}
   timerScp: {fileID: 1862094876}
@@ -569,20 +567,6 @@ MonoBehaviour:
   - {fileID: 4350495474808114725, guid: 3c6a9b5eac32b254e814c209b34d8d74, type: 3}
   - {fileID: 7735852415971357069, guid: d1cb599eddf341f43946c1595fad1c8c, type: 3}
   - {fileID: 8091685554950198091, guid: ea0a78bc2479c274ba84fd560af90d12, type: 3}
-  colors:
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 0.08627451, g: 0.28627452, b: 0.7372549, a: 1}
-  - {r: 0, g: 0.4862745, b: 0.14901961, a: 1}
-  - {r: 0.9882353, g: 1, b: 0.3019608, a: 1}
-  - {r: 0.3647059, g: 0, b: 1, a: 1}
-  - {r: 0.9137255, g: 0.29411766, b: 0.8784314, a: 1}
-  colorNames:
-  - ROJO
-  - AZUL
-  - VERDE
-  - AMARILLO
-  - MORADO
-  - ROSA
 --- !u!4 &400920451
 Transform:
   m_ObjectHideFlags: 0
